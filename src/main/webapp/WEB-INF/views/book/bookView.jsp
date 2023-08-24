@@ -1,3 +1,4 @@
+<%@page import="com.ezen.book.BookVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
@@ -20,7 +21,7 @@
 </style>
 <main>
 	<h2>도서 세부사항</h2>
-	<form action="bUpdate" method="post" id="uploadForm" name="uploadForm" enctype="multipart/form-data">
+	<form action="book?cmd=edit" method="post" id="uploadForm" name="uploadForm" enctype="multipart/form-data">
 		<table class="table table-sm table-bordered">
 			<tr>
 				<th>도서제목</th>
@@ -62,7 +63,7 @@
 				<th>도서 이미지</th>
 				<td class="disp">
 					<c:if test="${vo.saveFilename!=null}">
-					<img alt="" src="imgDown?upload=${vo.savePath}&saveFname=${vo.saveFilename}&originFname=${vo.srcFilename}"
+					<img alt="" src="book?cmd=imgDown&upload=${vo.savePath}&saveFname=${vo.saveFilename}&originFname=${vo.srcFilename}"
 					height="300px">
 					</c:if>
 				</td>
@@ -110,12 +111,12 @@
 		</c:if>
 		<div class="btn">
 			<button type="button" id="btnList" class="btn btn-success" 
-			onclick="location.href='bList?page=${param.page}&searchword=${param.searchword}&searchtype=${param.searchtype}'">도서목록
+			onclick="location.href='book?cmd=list&page=${param.page}&searchword=${param.searchword}&searchtype=${param.searchtype}'">도서목록
 			</button>
 			<c:if test="${mvo.grade=='a'}">
 			<button type="button" id="btnEdit" class="btn btn-warning" onclick="bookEdit()">도서수정</button>
 			<button type="button" id="btnDelete" class="btn btn-danger" onclick="bookDelete()">도서삭제</button>
-			<button type="submit" id="btnSave" class="btn btn-primary" style="display:none">도서저장</button>
+			<button type="submit" id="btnSave" class="btn btn-primary" style="display:none" onclick="bookSave()">도서저장</button>
 			<button type="reset" id="btnCancel" class="btn btn-danger" onclick="bookCancel()" style="display:none">저장취소</button>
 			</c:if>
 			<input type="hidden" name="bno" value="${param.bno}">
@@ -143,7 +144,7 @@
 		$(".rating-container").addClass("rating-sm");
 	}
 	function getStar(){
-		let url="scoreListAjax";
+		let url="book?cmd=slist";
 		let param={"bno":$("#bno").val()
 				,"page":$("#page").val()*1+1};
 		$("#page").val($("#page").val()*1+1);
@@ -186,7 +187,7 @@
 			alert("평가글을 입력하세요");
 			$("#cmt").focus();
 		}
-		let url="scoreSaveAjax";
+		let url="book?cmd=ssave";
 		let param={"id":"${sessionScope.mvo.id}"
 				,"bno":"${vo.bno}"
 				,"score":$("#score").val()
@@ -225,8 +226,11 @@
 	}
 	function bookDelete(){
 		if(confirm("도서삭제를 수행 하시겠습니까?")){
-			location.href="bDelete?bno=${param.bno}";
+			location.href="book?cmd=del&bno=${param.bno}";
 		}
+	}
+	function bookSave(){
+		document.querySelector("#uploadForm").submit();
 	}
 	function bookCancel(){
 		$(".disp").css("display","block");

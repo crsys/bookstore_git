@@ -21,7 +21,7 @@
 <h2>도서 목록</h2>
 <div id="top-button">
 	<c:if test="${mvo.grade=='a'}">
-	<a href="bNew"><button type="button" class="btn btn-primary">도서등록</button></a>
+	<a href="book?cmd=new"><button type="button" class="btn btn-primary">도서등록</button></a>
 	</c:if>
 </div>
 	<table class="table table-sm table-bordered">
@@ -41,7 +41,7 @@
 		<c:forEach items="${list}" var="book" varStatus="sts">
 			<tr>
 				<td>${sts.count}</td>
-				<td><a href="bView?bno=${book.bno}&page=${pvo.page}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}">
+				<td><a href="book?cmd=view&bno=${book.bno}&page=${pvo.page}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}">
 				${book.title}</a></td>
 				<td>${book.writer}</td>
 				<td>${book.publisher}</td>
@@ -55,20 +55,21 @@
           <ul class="pagination">
           <c:if test="${pvo.prev}">
             <li class="page-item">
-              <a class="page-link" href="bList?page=${pvo.beginPage-1}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}" aria-label="Previous">
+              <a class="page-link" href="book?cmd=list&page=${pvo.beginPage-1}&searchword=${pvo.searchword}&searchtype=
+              ${pvo.searchtype}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
           </c:if>
             <c:forEach begin="${pvo.beginPage}" end="${pvo.endPage}" var="i">
 			<c:choose>
-				<c:when test="${i!=pvo.page}"><li class="page-item"><a class="page-link" href="bList?page=${i}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}">${i}</a></li></c:when>
+				<c:when test="${i!=pvo.page}"><li class="page-item"><a class="page-link" href="book?cmd=list&page=${i}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}">${i}</a></li></c:when>
 				<c:otherwise><li class="page-item" style="padding:5px 15px 10px 15px">${i}</li></c:otherwise>
 			</c:choose>
 			</c:forEach>
 			<c:if test="${pvo.next}">
             <li class="page-item">
-              <a class="page-link" href="bList?page=${pvo.endPage+1}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}" aria-label="Next">
+              <a class="page-link" href="book?cmd=list&page=${pvo.endPage+1}&searchword=${pvo.searchword}&searchtype=${pvo.searchtype}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
@@ -77,7 +78,7 @@
         </nav>
       </div>
       <div id="searchdiv">
-		<form action="bList" method="post">
+		<form action="book?cmd=list&" method="post">
 	        <select name="searchtype" id="searchtype">
 	            <option value="title" checked>도서명</option>
 	            <option value="writer">저자명</option>

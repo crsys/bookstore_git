@@ -1,4 +1,4 @@
-package util;
+package com.ezen.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package book;
+package com.ezen.book;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.JDBCUtil;
+import com.ezen.util.JDBCUtil;
+
 
 public class BookDAO {
 	private static BookDAO dao=new BookDAO();
@@ -20,7 +21,7 @@ public class BookDAO {
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql="select bno,title,writer,price,publisher,regdate from booktbl order by regdate desc";
+		String sql="select bno,title,writer,price,publisher,regdate from booktbl where disp='y' order by regdate desc";
 		try {
 			pstmt=conn.prepareStatement(sql);
 			rs=pstmt.executeQuery();
@@ -44,7 +45,7 @@ public class BookDAO {
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql="select count(*) from booktbl";
+		String sql="select count(*) from booktbl where disp='y'";
 		try {
 			pstmt=conn.prepareStatement(sql);
 			rs=pstmt.executeQuery();
@@ -65,7 +66,7 @@ public class BookDAO {
 		ResultSet rs=null;
 		String sql="select * from(\r\n"
 				+ "    select rownum rn,A.* from\r\n"
-				+ "        (select * from booktbl order by bno desc) A\r\n"
+				+ "        (select * from booktbl where disp='y' order by bno desc) A\r\n"
 				+ "    where rownum<=?\r\n"
 				+ ") where rn>=?";
 		try {
@@ -95,7 +96,7 @@ public class BookDAO {
 		ResultSet rs=null;
 		String sql="select * from(\r\n"
 				+ "    select rownum rn,A.* from\r\n"
-				+ "        (select * from booktbl where "+searchtype+" like ? order by title) A\r\n"
+				+ "        (select * from booktbl where "+searchtype+" like ? and disp='y' order by title) A\r\n"
 				+ "    where rownum<=?\r\n"
 				+ ") where rn>=?";
 		try {
@@ -168,7 +169,7 @@ public class BookDAO {
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql="select * from booktbl where bno="+bno;
+		String sql="select * from booktbl where bno="+bno+" and disp='y'";
 		try {
 			pstmt=conn.prepareStatement(sql);
 			rs=pstmt.executeQuery();
@@ -221,7 +222,7 @@ public class BookDAO {
 	}
 	public int deleteBook(int bno) {
 		int result=0;
-		String sql="delete from booktbl where bno=?";
+		String sql="update booktbl set disp='n' where bno=?";
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		try {

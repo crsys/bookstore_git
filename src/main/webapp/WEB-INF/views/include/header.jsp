@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="book.BookVO"%>
+<%@page import="com.ezen.book.BookVO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,12 +23,12 @@
 <div class="btn_log">
 	<c:choose>
 		<c:when test="${mvo==null}">
-			<button type="button" id="login" name="login" class="btn btn-success" onclick="location.href='login'">로그인</button>
+			<button type="button" id="login" name="login" class="btn btn-success" onclick="location.href='member?cmd=login'">로그인</button>
 			<button type="button" id="register" name="register" class="btn btn-primary" onclick="">회원가입</button>
 		</c:when>
 		<c:otherwise>
 			${sessionScope.mvo.name}님
-			<button type="button" id="logout" name="logout" class="btn btn-warning" onclick="location.href='logout'">로그아웃</button>
+			<button type="button" id="logout" name="logout" class="btn btn-warning" onclick="location.href='member?cmd=logout'">로그아웃</button>
 		</c:otherwise>
 	</c:choose>
 	
